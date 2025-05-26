@@ -281,6 +281,7 @@ std::vector<double> Robot::DextMeasure(Eigen::VectorXd q) {
   std::vector<double> dext(6);
 
   Eigen::MatrixXd J;
+  Eigen::MatrixXd J_rot;
   getJacobian(J, q);
 
   Eigen::MatrixXd P(q.rows(), q.rows());
@@ -299,10 +300,18 @@ std::vector<double> Robot::DextMeasure(Eigen::VectorXd q) {
 
   J = J * P;
 
+  J_rot = J.block(0, 0, 3, q.rows());
+  J_rot = J_rot * P;
+
   double det = (J * J.transpose()).determinant();
+  double det_rot = (J_rot * J_rot.transpose()).determinant();
 
   if (det < 0) {
     det = 0.;
+  }
+
+  if (det_rot < 0) {
+    det_rot = 0.;
   }
 
   dext[0] = std::sqrt(det);
@@ -322,7 +331,8 @@ std::vector<double> Robot::DextMeasure(Eigen::VectorXd q) {
     min = eps;
   }
 
-  dext[1] = min / max;
+  // dext[1] = min / max;
+  dext[1] = std::sqrt(det_rot);
 
   // min sing value
   dext[2] = min;

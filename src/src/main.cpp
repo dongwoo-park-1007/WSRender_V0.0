@@ -42,24 +42,24 @@ int main(int argc, char **argv) {
 
   Robot.setLims(JPos_lims, JTorque_lims);
 
-  int n_samples = 6;  // number of samples for joint sampling
+  int n_samples = 7;  // number of samples for joint sampling
   std::vector<std::vector<double>> space_bounds(2);  // bounds for 3D space
 
-  space_bounds[0] = {-0.8, -0.8, -1.0};
-  space_bounds[1] = {0.8, 0.8, 1.0};
+  space_bounds[0] = {-0.8, -0.5, -0.5};
+  space_bounds[1] = {0.2, 0.6, 0.6};
 
   std::vector<Eigen::VectorXd> WS =
-      Robot.getWorkspace(n_samples, space_bounds, 0.2);
+      Robot.getWorkspace(n_samples, space_bounds, 0.05);
 
-  std::ofstream WS_file("my_WS_file_4.txt");
+  std::ofstream WS_file("my_WS_file_9_with_rot.txt");
 
   std::cout << "saving \n";
-  double X_min = -999999.9;
-  double X_max = 999999.9;
-  double Y_min = -999999.9;
-  double Y_max = 999999.9;
-  double Z_min = -9999999.9;
-  double Z_max = 9999999.9;
+  double X_min = 999999.9;
+  double X_max = -999999.9;
+  double Y_min = 999999.9;
+  double Y_max = -999999.9;
+  double Z_min = 9999999.9;
+  double Z_max = -9999999.9;
   for (int i = 0; i < WS.size(); i++) {
     SaveData(WS_file, WS[i]);
     double X_temp = WS[i][0];
