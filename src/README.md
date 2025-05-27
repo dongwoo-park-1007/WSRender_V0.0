@@ -10,3 +10,14 @@ In this file you need to set
 - joint limits
 - overestimated bounds for he workspace
 - number of joint sampling
+
+
+## How to build
+```
+catkin_make
+```
+
+## How to run
+```
+./build/workspace
+```
